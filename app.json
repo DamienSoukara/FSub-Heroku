@@ -1,0 +1,46 @@
+{
+  "name": "Fsub-Heroku",
+  "description": "A Telegram Bot to force users to join a specific channel before sending messages in a group!",
+  "logo": "https://i.imgur.com/YtlnKVy.jpg",
+  "keywords": [
+    "Telegram",
+    "Bot",
+    "Fsub",
+    "Group",
+    "Channel"
+  ],
+  "repository": "https://github.com/DamienSoukara/FSub-Heroku",
+  "website": "AmineSoukara.me",
+  "success_url": "t.me/ForceSubscribeRobot",
+  "env": {
+    "APP_ID": {
+      "description": "Get this value from my.telegram.org! Please do not steal",
+      "value": ""
+    },
+    "API_HASH": {
+      "description": "Get this value from my.telegram.org! Please do not steal",
+      "value": ""
+    },
+    "BOT_TOKEN": {
+      "description": "Your Bot Token Obtained From @BotFather.",
+      "value": ""
+    }
+  },
+  "addons": [
+    {
+    "plan": "heroku-postgresql",
+      "options": {
+        "version": "12"
+      }
+    }
+  ],
+  "buildpacks": [{
+    "url": "heroku/python"
+  }],
+  "formation": {
+    "worker": {
+      "quantity": 1,
+      "size": "free"
+    }
+  }
+}
