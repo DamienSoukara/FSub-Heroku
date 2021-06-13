@@ -45,23 +45,34 @@ def _check_member(client, message):
     user_id = message.from_user.id
     if not client.get_chat_member(chat_id, user_id).status in ("administrator", "creator") and not user_id in Config.SUDO_USERS:
       channel = chat_db.channel
+      if channel.startswith("-"):
+          url = client.export_chat_invite_link(int(channel))
+      else:
+          url = f"https://t.me/{channel}"
       try:
         client.get_chat_member(channel, user_id)
       except UserNotParticipant:
         try:
           sent_message = message.reply_text(
-              "Hi {}, You Are **Not Subscribed** To My [Channel](https://t.me/{}) Yet. Please 👉 [Join](https://t.me/{}) And **Press The Button Below** 👇 To Unmute Yourself.".format(message.from_user.mention, channel, channel),
+              f"Hi {}, You Are **Not Subscribed** To My [Channel]({url}) Yet. Please 👉 [Join]({url}) And **Press The Button Below** 👇 To Unmute Yourself..".format(message.from_user.mention),
               disable_web_page_preview=True,
               reply_markup=InlineKeyboardMarkup(
-                  [[InlineKeyboardButton("🔔 UnMute Me 🔕", callback_data="onUnMuteRequest")]]
-              )
-          )
+             [
+                 [
+                     InlineKeyboardButton("💬 Subscribe", url=url)
+                 ],
+                 [
+                     InlineKeyboardButton("🔕 UnMute Me", callback_data="onUnMuteRequest")
+                 ]
+             ]
+         )
+           )
           client.restrict_chat_member(chat_id, user_id, ChatPermissions(can_send_messages=False))
         except ChatAdminRequired:
           sent_message.edit("❗ **I am not an admin here.**\n__Make me admin with ban user permission and add me again.\n#Leaving this chat...__")
           client.leave_chat(chat_id)
       except ChatAdminRequired:
-        client.send_message(chat_id, text=f"❗ **I am not an admin in @{channel}**\n__Make me admin in the channel and add me again.\n#Leaving this chat...__")
+        client.send_message(chat_id, text=f"❗ **I am not an admin in [channel]({url})**\n__Make me admin in the channel and add me again.\n#Leaving this chat...__")
         client.leave_chat(chat_id)
 
 
@@ -90,16 +101,25 @@ def fsub(client, message):
         try:
           client.get_chat_member(input_str, "me")
           sql.add_channel(chat_id, input_str)
-          message.reply_text(f"✅ **Force Subscribe is Enabled**\n__Force Subscribe is enabled, all the group members have to subscribe this [channel](https://t.me/{input_str}) in order to send messages in this group.__", disable_web_page_preview=True)
+          if input_str.startswith("-"):
+              url = client.export_chat_invite_link(int(input_str))
+          else:
+              url = f"https://t.me/{input_str}"
+          message.reply_text(f"✅ **Force Subscribe is Enabled**\n__Force Subscribe is enabled, all the group members have to subscribe this [channel]({url}) in order to send messages in this group.__", disable_web_page_preview=True)
         except UserNotParticipant:
-          message.reply_text(f"❗ **Not an Admin in the Channel**\n__I am not an admin in the [channel](https://t.me/{input_str}). Add me as a admin in order to enable ForceSubscribe.__", disable_web_page_preview=True)
+          message.reply_text(f"❗ **Not an Admin in the Channel**\n__I am not an admin in the [channel]({url}). Add me as a admin in order to enable ForceSubscribe.__", disable_web_page_preview=True)
         except (UsernameNotOccupied, PeerIdInvalid):
-          message.reply_text(f"❗ **Invalid Channel Username.**")
+          message.reply_text(f"❗ **Invalid Channel Username/ID.**")
         except Exception as err:
           message.reply_text(f"❗ **ERROR:** ```{err}```")
     else:
       if sql.fs_settings(chat_id):
-        message.reply_text(f"✅ **Force Subscribe is enabled in this chat.**\n__For this [Channel](https://t.me/{sql.fs_settings(chat_id).channel})__", disable_web_page_preview=True)
+        my_channel = sql.fs_settings(chat_id).channel
+        if my_channel.startswith("-"):
+            url = client.export_chat_invite_link(int(input_str))
+        else:
+            url = f"https://t.me/{my_channel}"
+        message.reply_text(f"✅ **Force Subscribe is enabled in this chat.**\n__For this [Channel]({url})__", disable_web_page_preview=True)
       else:
         message.reply_text("❌ **Force Subscribe is disabled in this chat.**")
   else:
