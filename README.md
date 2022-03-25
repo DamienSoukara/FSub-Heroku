@@ -1,10 +1,10 @@
 # Force Subscribe :
 <p align="center"><a href="#"><img src="https://i.imgur.com/SmqQApH.jpg" width="250"></a></p> 
-<h1 align="center"><b>@ForceSubscribeRobot</b></h1>
+<h1 align="center"><b>@RadioFoortiBot</b></h1>
 <h4 align="center">A Telegram Bot to force users to join a specific channel before sending messages in a group.</h4>
 
 # 🤖 Demo :
-Find it On Telegram As [@ForceSubscribeRobot](https://t.me/ForceSubscribeRoBot)
+Find it On Telegram As [@RadioFoortiBot](https://t.me/RadioFoortiBot)
 
 # 👨‍💻 Deploy:
 ### -Easy Way
@@ -33,5 +33,5 @@ python3 bot.py
 
 
 ## 👨‍💻 Credits :
-Special Thanks To [@AdnanAhmad](https://github.com/viperadnan-git) & [@AmineSoukara](https://github.com/AmineSoukara) & [@Pyrogram](https://github.com/Pyrogram)
+Special Thanks To [@](https://github.com/viperadnan-git) & [@](https://github.com/AmineSoukara) & [@](https://github.com/Pyrogram)
 ## 🖤 Original Repo : [Github@Viperadnan-Git](https://github.com/viperadnan-git/force-subscribe-telegram-bot)
